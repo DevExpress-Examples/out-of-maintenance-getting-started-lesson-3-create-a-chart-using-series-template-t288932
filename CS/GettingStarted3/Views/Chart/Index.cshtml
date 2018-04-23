@@ -1,0 +1,45 @@
+﻿@model IEnumerable<GettingStarted3.Models.Gdp>
+@{
+    ViewBag.Title = "Getting Started Lesson 3";
+}
+
+@Html.DevExpress().Chart(settings => {
+    // Specify the obligatory chart name.
+    settings.Name = "Chart";
+    settings.Width = 640;
+    settings.Height = 360;
+    settings.PaletteName = "Office 2013";
+
+    // Configure a template used to generate series.
+    settings.Series.Template(t => {
+        t.SetDataMembers("Year", "Product");
+        t.Views().LineSeriesView(v => {
+            v.MarkerVisibility = DefaultBoolean.True;
+        });
+    });
+
+    // Add a chart title.
+    settings.Titles.Add(t => t.Text = "G7 GDP");
+
+    // Configure the diagram after series because diagram can be changed
+    // to be compatible with the series view type.
+    settings.XYDiagram(d => {
+        // Set the X-axis title text and show it.
+        d.AxisX.Title.Visibility = DefaultBoolean.True;
+        d.AxisX.Title.Text = "Year";
+
+        // Configure scale options to show only integer value tickmarks. 
+        d.AxisX.NumericScaleOptions.MeasureUnit = NumericMeasureUnit.Ones;
+        d.AxisX.NumericScaleOptions.GridOffset = 1;
+
+        // Set the Y-axis title text and show it.
+        d.AxisY.Title.Visibility = DefaultBoolean.True;
+        d.AxisY.Title.Text = "GDP, billions of USD";
+    });
+
+    settings.Legends.Default(l => {
+        l.AlignmentHorizontal = LegendAlignmentHorizontal.Left;
+        l.AlignmentVertical = LegendAlignmentVertical.Top;
+        l.Direction = LegendDirection.LeftToRight;
+    });
+}).Bind(Model, "Country").GetHtml()
