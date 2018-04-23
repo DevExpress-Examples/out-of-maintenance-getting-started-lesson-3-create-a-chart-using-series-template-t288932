@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "MVC Charts Getting Started Lesson 3";
+}
+
+@Html.DevExpress().Chart(settings => {
+    // Specify the obligatory chart properties.
+    settings.Name = "chart";
+
+    // Improve the chart appearance.
+    settings.PaletteName = "Office 2013";
+    settings.Width = 640;
+    settings.Height = 360;
+
+    // Specify data member, which value the series are based on.
+    settings.SeriesDataMember = "Year";
+    // Specify data members, which values are used as series arguments and values.
+    settings.SeriesTemplate.ArgumentDataMember = "Region";
+    settings.SeriesTemplate.ValueDataMembers.AddRange("GSP1");
+    // Customize view of auto-generated series.
+    SideBySideBarSeriesView view = settings.SeriesTemplate.View as SideBySideBarSeriesView;
+    if (view != null) {
+        view.FillStyle.FillMode = FillMode.Solid;
+    }
+
+    // Add a chart title.
+    settings.Titles.Add(new ChartTitle { Text = "US regions gross state product" });
+
+    //Add an Y-axis title.
+    XYDiagram diagram = settings.Diagram as XYDiagram;
+    if (diagram != null) {
+        diagram.AxisY.Title.Text = "Millions of USD";
+        diagram.AxisY.Title.Visibility = DefaultBoolean.True;
+    }
+}).Bind(Model).GetHtml()
