@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Chart Getting Started Lesson 3";
+
+    ChartControlSettings settings = new ChartControlSettings {
+        Name = "chart",
+        Width = 640,
+        Height = 360,
+        PaletteName = "Office 2013"
+    };
+
+    settings.SeriesDataMember = "Year";
+    settings.SeriesTemplate.ArgumentDataMember = "Region";
+    settings.SeriesTemplate.ValueDataMembers.AddRange("GSP1");
+
+    SideBySideBarSeriesView view = new SideBySideBarSeriesView();
+    view.FillStyle.FillMode = FillMode.Solid;
+
+    settings.SeriesTemplate.View = view;
+
+    settings.Titles.Add(new ChartTitle { Text = "US regions gross state product" });
+
+    XYDiagram diagram = settings.Diagram as XYDiagram;
+    if (diagram != null) {
+        diagram.AxisY.Title.Text = "Millions of USD";
+        diagram.AxisY.Title.Visibility = DefaultBoolean.True;
+    }
+    
+    Html.DevExpress().Chart(settings).Bind(Model).GetHtml();
+}
